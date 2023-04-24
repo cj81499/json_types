@@ -12,3 +12,14 @@ jobs:
   test:
     needs: [build]
     uses: ./.github/workflows/test.yaml
+
+  collector:
+    needs: [build, test]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for failures
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: |
+          echo Job failed
+          exit 1
