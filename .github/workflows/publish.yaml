@@ -1,0 +1,29 @@
+on:
+  workflow_call:
+    inputs:
+      repository-url:
+        type: string
+        description: The repository URL to use
+        required: true
+
+jobs:
+  # TODO: https://github.com/cj81499/json_types/issues/2
+  publish:
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: package
+          path: dist/
+
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          # password is required but we're using trusted publishing
+          # https://docs.pypi.org/trusted-publishers/using-a-publisher/
+          password: ""
+          repository-url: ${{ inputs.repository-url }}
+          # https://test.pypi.org/legacy/

@@ -1,0 +1,17 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yaml
+
+  publish:
+    needs: [test]
+    uses: ./.github/workflows/publish.yaml
+    permissions:
+      id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
+    with:
+      repository-url: https://test.pypi.org/legacy/ # for testing
+      # repository-url: https://upload.pypi.org/legacy/ # for release
