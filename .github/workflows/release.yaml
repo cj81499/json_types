@@ -1,17 +1,42 @@
 name: Release
 
 on:
+  # for now, releases will be manually triggered
+  # it'd be nice to
   workflow_dispatch:
+    inputs:
+      publish-to:
+        type: choice
+        description: The URL of the PyPI repository to publish to
+        required: true
+        options:
+          - https://test.pypi.org/legacy/ # for testing
+          - https://upload.pypi.org/legacy/ # for release
 
 jobs:
+  build:
+    uses: ./.github/workflows/build.yaml
+
   test:
+    needs: [build]
     uses: ./.github/workflows/test.yaml
 
   publish:
     needs: [test]
-    uses: ./.github/workflows/publish.yaml
+    runs-on: ubuntu-latest
+    environment: release
     permissions:
       id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
-    with:
-      repository-url: https://test.pypi.org/legacy/ # for testing
-      # repository-url: https://upload.pypi.org/legacy/ # for release
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: package
+          path: dist/
+
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          # # password is marked as required but we're using trusted publishing
+          # # https://docs.pypi.org/trusted-publishers/using-a-publisher/
+          # password: ""
+          repository-url: ${{ inputs.publish-to }}
