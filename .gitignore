@@ -1,0 +1,9 @@
+.direnv/
+.venv/
+
+.*_cache/
+__pycache__/
+
+.coverage*
+
+dist/
