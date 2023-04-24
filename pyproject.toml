@@ -35,11 +35,13 @@ dynamic = ["version", "description"]
 [project.optional-dependencies]
 dev = [
   "black >= 23.3", # https://black.readthedocs.io/en/stable/the_black_code_style/index.html#stability-policy
-  "build >= 0.10.0",
   "coverage[toml] >= 7.2.3",
   "mypy >= 1.2", # https://github.com/python/mypy/wiki/Release-Process#versioning-scheme
   "pytest >= 7.3",
   "ruff >= 0.0.262",
+]
+build = [
+  "build >= 0.10.0",
 ]
 
 [project.urls]
