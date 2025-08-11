@@ -24,13 +24,11 @@ _RAISE = object()
 
 
 @overload
-def get_path(obj: JsonObject, path: Sequence[str]) -> Json:
-    ...
+def get_path(obj: JsonObject, path: Sequence[str]) -> Json: ...
 
 
 @overload
-def get_path(obj: JsonObject, path: Sequence[str], default: T) -> Union[Json, T]:
-    ...
+def get_path(obj: JsonObject, path: Sequence[str], default: T) -> Union[Json, T]: ...
 
 
 def get_path(obj: JsonObject, path: Sequence[str], default: Union[T, object] = _RAISE) -> Union[Json, T]:
