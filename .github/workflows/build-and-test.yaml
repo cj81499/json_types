@@ -1,0 +1,46 @@
+name: Build and test
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Install the project
+        run: uv sync --locked --dev # --all-extras
+
+      - name: Check code format (ruff)
+        run: uv run ruff format --check .
+
+      - name: Lint code (ruff)
+        run: uv run ruff check .
+
+      - name: Type check (mypy)
+        run: uv run mypy .
+
+      - name: Run tests (pytest)
+        run: uv run coverage run -m pytest .
+
+      - name: Build package
+        if: ${{ matrix.python-version == '3.13' }} # build only on latest supported Python
+        run: |
+          export SOURCE_DATE_EPOCH=$(date +%s)
+          echo "SOURCE_DATE_EPOCH: $SOURCE_DATE_EPOCH"
+          uv build
+
+      - name: Upload package distributions to GitHub
+        if: ${{ matrix.python-version == '3.13' }} # upload only on latest supported Python
+        uses: actions/upload-artifact@v4
+        with:
+          name: package
+          path: dist/
+          if-no-files-found: error

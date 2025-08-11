@@ -3,18 +3,14 @@ name: CI
 on:
   pull_request:
   push:
-    branches: main
+    branches: [main]
 
 jobs:
-  build:
-    uses: ./.github/workflows/build.yaml
-
-  test:
-    needs: [build]
-    uses: ./.github/workflows/test.yaml
+  build-and-test:
+    uses: ./.github/workflows/build-and-test.yaml
 
   collector:
-    needs: [build, test]
+    needs: [build-and-test]
     if: always()
     runs-on: ubuntu-latest
     steps:
