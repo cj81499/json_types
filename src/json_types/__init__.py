@@ -1,20 +1,21 @@
 """Type definitions and utilities for working with JSON in Python."""
 
-from typing import Mapping, Optional, Sequence, TypeVar, Union, cast, overload
+from collections.abc import Mapping, Sequence
+from typing import TypeVar, Union, cast, overload
 
 __version__ = "0.1.1"
 
 __all__ = (
     "Json",
-    "JsonObject",
     "JsonArray",
+    "JsonObject",
     "get_path",
 )
 
 T = TypeVar("T")
 
 # https://www.json.org/json-en.html
-Json = Optional[Union["JsonObject", "JsonArray", str, int, float, bool]]
+Json = Union["JsonObject", "JsonArray", str, int, float, bool] | None
 JsonObject = Mapping[str, "Json"]
 JsonArray = Sequence["Json"]
 
@@ -24,16 +25,14 @@ _RAISE = object()
 
 
 @overload
-def get_path(obj: JsonObject, path: Sequence[str]) -> Json:
-    ...
+def get_path(obj: JsonObject, path: Sequence[str]) -> Json: ...
 
 
 @overload
-def get_path(obj: JsonObject, path: Sequence[str], default: T) -> Union[Json, T]:
-    ...
+def get_path(obj: JsonObject, path: Sequence[str], default: T) -> Json | T: ...
 
 
-def get_path(obj: JsonObject, path: Sequence[str], default: Union[T, object] = _RAISE) -> Union[Json, T]:
+def get_path(obj: JsonObject, path: Sequence[str], default: T | object = _RAISE) -> Json | T:
     """Get the value at `path` of the JSONObject `obj`."""
     # str is a Sequence[str], but is not an acceptable path
     if isinstance(path, str):
