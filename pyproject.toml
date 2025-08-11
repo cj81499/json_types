@@ -55,6 +55,8 @@ line-length = 120
 [tool.ruff]
 target-version = "py310"
 line-length = 120
+
+[tool.ruff.lint]
 select = [
   "A",
   "ARG",
@@ -87,10 +89,10 @@ ignore = [
 ]
 unfixable = []
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["json_types"]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "tests/**/*" = [
   "S101", # tests can use assertions
 ]
