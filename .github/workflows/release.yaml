@@ -14,15 +14,11 @@ on:
           - https://upload.pypi.org/legacy/ # for release
 
 jobs:
-  build:
-    uses: ./.github/workflows/build.yaml
-
-  test:
-    needs: [build]
-    uses: ./.github/workflows/test.yaml
+  build-and-test:
+    uses: ./.github/workflows/build-and-test.yaml
 
   publish:
-    needs: [test]
+    needs: [build-and-test]
     runs-on: ubuntu-latest
     environment: release
     permissions:
@@ -33,10 +29,8 @@ jobs:
           name: package
           path: dist/
 
+        # https://docs.pypi.org/trusted-publishers/using-a-publisher/
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          # # password is marked as required but we're using trusted publishing
-          # # https://docs.pypi.org/trusted-publishers/using-a-publisher/
-          # password: ""
           repository-url: ${{ inputs.publish-to }}
