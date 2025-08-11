@@ -31,17 +31,6 @@ classifiers = [
 dependencies = []
 dynamic = ["version", "description"]
 
-[project.optional-dependencies]
-dev = [
-  "black >= 23.3", # https://black.readthedocs.io/en/stable/the_black_code_style/index.html#stability-policy
-  "coverage[toml] >= 7.2.3",
-  "mypy >= 1.2", # https://github.com/python/mypy/wiki/Release-Process#versioning-scheme
-  "pytest >= 7.3",
-  "ruff >= 0.0.262",
-]
-build = [
-  "build >= 0.10.0",
-]
 
 [project.urls]
 Documentation = "https://github.com/cj81499/json_types#readme"
@@ -111,3 +100,11 @@ exclude_lines = [
 
 [tool.mypy]
 strict = true
+
+[dependency-groups]
+dev = [
+  "coverage[toml]>=7.2.7",
+  "mypy>=1.4.1",
+  "pytest>=7.4.4",
+  "ruff>=0.12.8",
+]
