@@ -39,7 +39,7 @@ jobs:
 
       - name: Upload package distributions to GitHub
         if: ${{ matrix.python-version == '3.13' }} # upload only on latest supported Python
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: package
           path: dist/
