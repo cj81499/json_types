@@ -21,8 +21,14 @@ jobs:
       - name: Check code format (ruff)
         run: uv run ruff format --check .
 
+      - name: Check code format (tombi)
+        run: uv run tombi format --check
+
       - name: Lint code (ruff)
         run: uv run ruff check .
+
+      - name: Lint code (tombi)
+        run: uv run tombi lint
 
       - name: Type check (mypy)
         run: uv run mypy .
