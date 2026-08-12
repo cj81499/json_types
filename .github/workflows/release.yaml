@@ -13,8 +13,12 @@ on:
           - https://test.pypi.org/legacy/ # for testing
           - https://upload.pypi.org/legacy/ # for release
 
+permissions: {}
+
 jobs:
   build-and-test:
+    permissions:
+      contents: read # to check out the repository
     uses: ./.github/workflows/build-and-test.yaml
 
   publish:

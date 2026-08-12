@@ -5,14 +5,19 @@ on:
   push:
     branches: [main]
 
+permissions: {}
+
 jobs:
   build-and-test:
+    permissions:
+      contents: read # to check out the repository
     uses: ./.github/workflows/build-and-test.yaml
 
   collector:
     needs: [build-and-test]
     if: always()
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       - name: Check for failures
         if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
