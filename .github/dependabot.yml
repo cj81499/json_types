@@ -9,6 +9,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -18,4 +20,6 @@ updates:
       artifacts:
         patterns:
           - "actions/*-artifact"
+    cooldown:
+      default-days: 7
   
