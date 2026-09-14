@@ -4,7 +4,7 @@ import pytest
 
 import json_types
 
-json_object: json_types.JsonObject = {
+json_object: json_types.ImmutableJsonObject = {
     "a": 1,
     "b": 2.1,
     "c": True,
@@ -33,7 +33,7 @@ json_object: json_types.JsonObject = {
         pytest.param(("g", "i", "j"), "deeply nested"),
     ),
 )
-def test_deep_get(path: Sequence[str], expected: json_types.Json) -> None:
+def test_deep_get(path: Sequence[str], expected: json_types.ImmutableJson) -> None:
     assert json_types.get_path(json_object, path) == expected
 
 
@@ -60,7 +60,7 @@ def test_deep_get(path: Sequence[str], expected: json_types.Json) -> None:
         pytest.param(("g", "i", "j", "z"), "DEFAULT RETURN VALUE", "DEFAULT RETURN VALUE"),
     ),
 )
-def test_deep_get_with_default(path: Sequence[str], default: object, expected: json_types.Json) -> None:
+def test_deep_get_with_default(path: Sequence[str], default: object, expected: json_types.ImmutableJson) -> None:
     assert json_types.get_path(json_object, path, default) == expected
 
 
